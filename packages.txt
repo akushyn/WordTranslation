@@ -1,4 +1,11 @@
-fastapi
-googletrans-py
-uvicorn
 alembic
+black
+googletrans-py
+fastapi
+pydantic-settings
+sqlalchemy[postgresql_asyncpg]
+uvicorn[standard]
+pytest
+pytest-cov
+black
+pre-commit
