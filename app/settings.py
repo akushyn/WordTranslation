@@ -1,11 +1,16 @@
 import os
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import computed_field
 
 
 class Settings(BaseSettings):
     database_url: str = ""
     echo_sql: bool = False
+    sentry_dsn: str = ""
+    sentry_environment: str = ""
+    logging_handlers: list[str] = ["console"]
+    logging_level: str = "DEBUG"
 
     model_config = SettingsConfigDict(
         case_sensitive=False,
@@ -16,6 +21,38 @@ class Settings(BaseSettings):
         env_file=".env" if not os.getenv("NO_DOT_ENV", "") else None,
         env_file_encoding="utf-8",
     )
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def logging(self) -> dict:
+        return {
+            "version": 1,
+            "disable_existing_loggers": True,
+            "formatters": {
+                "file": {
+                    "format": "[%(asctime)s: %(levelname)s/%(name)s] %(message)s",
+                },
+            },
+            "handlers": {
+                "console": {
+                    "level": self.logging_level,
+                    "class": "logging.StreamHandler",
+                    "formatter": "file",
+                },
+            },
+            "loggers": {
+                "uvicorn": {
+                    "level": "INFO",
+                    "handlers": self.logging_handlers,
+                    "propagate": True,
+                },
+                "app": {
+                    "level": "DEBUG",
+                    "handlers": self.logging_handlers,
+                    "propagate": True,
+                },
+            },
+        }
 
 
 settings = Settings()

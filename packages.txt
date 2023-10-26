@@ -5,6 +5,7 @@ fastapi
 pydantic-settings
 sqlalchemy[postgresql_asyncpg]
 uvicorn[standard]
+sentry-sdk[fastapi]
 pytest
 pytest-cov
 black
