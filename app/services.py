@@ -88,7 +88,6 @@ class TranslationService:
             )
             translation = await self.create_translation(translation_data)
 
-        # type: ignore
         return TranslationCreate(
             id=int(translation.id),
             word=str(translation.word),

@@ -30,5 +30,5 @@ async def delete_translation(
     session: AsyncSession = Depends(get_session),
 ):
     service = TranslationService(session)
-    response = service.delete_translation(request)
+    response = await service.delete_translation(request)
     return response
