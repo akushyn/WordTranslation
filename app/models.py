@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class TranslationRequest(BaseModel):
     word: str
     target_lang: str
-    source_lang: str = "auto"
+    source_lang: str | None = None
 
 
 class TranslationResponse(TranslationRequest):

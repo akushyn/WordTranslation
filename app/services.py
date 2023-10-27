@@ -1,5 +1,5 @@
 import logging
-
+from fastapi import HTTPException, Response
 from app.db.models import Translation
 from app.exceptions import DuplicateTranslationException
 from app.models import TranslationRequest, TranslationResponse, TranslationCreate
@@ -22,8 +22,14 @@ class TranslationService:
         translation = result.scalars().first()
         return translation
 
-    async def get_translation_by_word(self, word: str) -> Translation | None:
-        query = select(Translation).where(Translation.word == word)
+    async def get_translation_by_word(
+        self,
+        word: str,
+        target_lang: str,
+    ) -> Translation | None:
+        query = select(Translation).where(
+            (Translation.word == word) & (Translation.target_lang == target_lang)
+        )
         result = await self.session.execute(query)
         translation = result.scalars().first()
         return translation
@@ -69,7 +75,10 @@ class TranslationService:
         self, request: TranslationRequest
     ) -> TranslationCreate:
         # attempt to get translation from database
-        translation = await self.get_translation_by_word(request.word)
+        translation = await self.get_translation_by_word(
+            word=request.word,
+            target_lang=request.target_lang,
+        )
         if translation is None:
             # get & store translation from Google
             translation_data = translate(
@@ -89,3 +98,17 @@ class TranslationService:
             source_lang=str(translation.source_lang),
             target_lang=str(translation.target_lang),
         )
+
+    async def delete_translation(self, request: TranslationRequest):
+        translation = await self.get_translation_by_word(
+            word=request.word,
+            target_lang=request.target_lang,
+        )
+        if not translation:
+            raise HTTPException(status_code=404, detail="Translation not found")
+
+        await self.session.delete(translation)
+        await self.session.commit()
+
+        response = Response(status_code=204)
+        return response

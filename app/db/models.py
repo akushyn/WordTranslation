@@ -9,9 +9,8 @@ class Translation(Base):
     __table_args__ = (
         UniqueConstraint(
             "word",
-            "source_lang",
             "target_lang",
-            name="uc_word_source_lang_target_lang",
+            name="uc_word_target_lang",
         ),
     )
 

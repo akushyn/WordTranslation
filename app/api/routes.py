@@ -22,3 +22,13 @@ async def get_translation(
     service = TranslationService(session)
     response = await service.get_or_create_translation(request)
     return response
+
+
+@router.delete("/translations/word")
+async def delete_translation(
+    request: TranslationRequest = Depends(),
+    session: AsyncSession = Depends(get_session),
+):
+    service = TranslationService(session)
+    response = service.delete_translation(request)
+    return response
