@@ -38,7 +38,7 @@ async def delete_translation(
 
 @router.get(
     "/translations",
-    response_model=PaginatedResponse[TranslationResponse] | list[TranslationResponse],
+    response_model=PaginatedResponse[TranslationResponse],
 )
 async def get_translations(
     page: int = Query(1, ge=0),
@@ -48,7 +48,7 @@ async def get_translations(
     sort_desc: bool = settings.pagination_sort_desc,
     search: str = Query(default=""),
     session: AsyncSession = Depends(get_session),
-) -> PaginatedResponse[TranslationResponse] | list[TranslationResponse]:
+) -> PaginatedResponse[TranslationResponse]:
     service = TranslationService(session=session)
     service.paginator_class = Paginator
 

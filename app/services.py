@@ -57,7 +57,7 @@ class TranslationService(PaginateMixin):
         per_page: int = 10,
         sort_desc: bool = False,
         search: str = "",
-    ):
+    ) -> PaginatedResponse[TranslationResponse]:
         query = select(Translation)
 
         if search:
