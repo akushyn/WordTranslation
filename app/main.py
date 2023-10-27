@@ -1,3 +1,4 @@
+from app.middlewares import PaginationMiddleware
 from fastapi import FastAPI
 from app.api import routes
 import logging.config
@@ -15,6 +16,7 @@ def create_app():
     logging.config.dictConfig(settings.logging)
 
     app = FastAPI()
+    app.add_middleware(PaginationMiddleware)
     app.include_router(router=routes.router, prefix="/api")
 
     return app

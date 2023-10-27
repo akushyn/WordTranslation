@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from typing import Generic, TypeVar
+from pydantic import BaseModel, Field
 
 
 class TranslationRequest(BaseModel):
@@ -15,3 +16,16 @@ class TranslationResponse(TranslationRequest):
 
 class TranslationCreate(TranslationResponse):
     id: int
+
+
+T = TypeVar("T")
+
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    count: int = Field(description="Items count")
+    page_num: int = Field(description="Page number")
+    per_page: int = Field(description="Items per page")
+    pages: int = Field(description="Pages count")
+    items: list[T] = Field(description="Response Items")
+    next: str | None
+    previous: str | None

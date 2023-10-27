@@ -1,26 +1,39 @@
 import logging
+from typing import Any
+
+from app.paginator import Paginator
 from fastapi import HTTPException, Response
 from app.db.models import Translation
 from app.exceptions import DuplicateTranslationException
-from app.models import TranslationRequest, TranslationResponse, TranslationCreate
+from app.models import (
+    TranslationRequest,
+    TranslationResponse,
+    TranslationCreate,
+    PaginatedResponse,
+)
 from app.translation import translate
 from sqlalchemy import desc, asc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import Select
 
 
 logger = logging.getLogger(__name__)
 
 
-class TranslationService:
+class PaginateMixin(object):
+    async def paginate(
+        self, query: Select, page: int, per_page: int
+    ) -> PaginatedResponse[Any]:
+        paginator = Paginator(self.session, query, page, per_page)  # type: ignore
+        return await paginator.get_response()
+
+
+class TranslationService(PaginateMixin):
+    paginator_class: type[Paginator] | None = None
+
     def __init__(self, session: AsyncSession):
         self.session = session
-
-    async def get_translation_by_id(self, translation_id: int):
-        query = select(Translation).where(Translation.id == translation_id)
-        result = await self.session.execute(query)
-        translation = result.scalars().first()
-        return translation
 
     async def get_translation_by_word(
         self,
@@ -39,7 +52,7 @@ class TranslationService:
         page: int = 1,
         per_page: int = 10,
         sort_desc: bool = False,
-        search: str | None = None,
+        search: str = "",
     ):
         query = select(Translation)
 
@@ -51,9 +64,10 @@ class TranslationService:
         else:
             query = query.order_by(asc(Translation.word))
 
-        result = await self.session.execute(
-            query.limit(per_page).offset((page - 1) * per_page)
-        )
+        if self.paginator_class:
+            return await self.paginate(query, page, per_page)
+
+        result = await self.session.execute(query)
         translations = result.scalars().all()
         return translations
 

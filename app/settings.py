@@ -15,6 +15,10 @@ class Settings(BaseSettings):
     googletrans_raise_exception: bool = False
     googletrans_proxies: dict | None = None
 
+    pagination_sort_desc: bool = False
+    pagination_per_page: int = 10
+    pagination_per_page_max: int = 100
+
     model_config = SettingsConfigDict(
         case_sensitive=False,
         # Usage of .env file may be disabled by NO_DOT_ENV environment

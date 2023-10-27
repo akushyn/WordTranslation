@@ -1,17 +1,19 @@
+from app.paginator import Paginator
+from app.settings import settings
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.base import get_session
-
-from app.models import TranslationRequest, TranslationCreate
+from fastapi import Query
+from app.models import (
+    TranslationRequest,
+    TranslationCreate,
+    PaginatedResponse,
+    TranslationResponse,
+)
 from app.services import TranslationService
 from fastapi import APIRouter, Depends
 
 
 router = APIRouter()
-
-
-@router.get("/ping", include_in_schema=False)
-async def pong():
-    return {"ping": "pong!"}
 
 
 @router.get("/translations/word", response_model=TranslationCreate)
@@ -32,3 +34,27 @@ async def delete_translation(
     service = TranslationService(session)
     response = await service.delete_translation(request)
     return response
+
+
+@router.get(
+    "/translations",
+    response_model=PaginatedResponse[TranslationResponse] | list[TranslationResponse],
+)
+async def get_translations(
+    page: int = Query(1, ge=0),
+    per_page: int = Query(
+        settings.pagination_per_page, ge=0, le=settings.pagination_per_page_max
+    ),
+    sort_desc: bool = settings.pagination_sort_desc,
+    search: str = Query(default=""),
+    session: AsyncSession = Depends(get_session),
+) -> PaginatedResponse[TranslationResponse] | list[TranslationResponse]:
+    service = TranslationService(session=session)
+    service.paginator_class = Paginator
+
+    return await service.get_translations(
+        page=page,
+        per_page=per_page,
+        sort_desc=sort_desc,
+        search=search,
+    )
