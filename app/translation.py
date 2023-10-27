@@ -1,49 +1,39 @@
 import logging
-
-from app.models import WordTranslationRequest, WordTranslationResponse
+from app.models import TranslationResponse
 from googletrans import Translator  # type: ignore
-from googletrans.models import Translated
 from app.exceptions import TranslationException
+from app.settings import settings
 
-_translator = Translator()
+
+_translator = Translator(
+    service_urls=settings.googletrans_service_urls,
+    raise_exception=settings.googletrans_raise_exception,
+    proxies=settings.googletrans_proxies,
+)
+
 logger = logging.getLogger(__name__)
 
 
-class TranslationHandler:
-    def process(self, request: WordTranslationRequest) -> WordTranslationResponse:
-        logger.info(f"Start word processing: {request.model_dump()}")
-
-        translation = get_translation(
-            text=request.word,
-            source_lang=request.source_lang,
-            dest_lang=request.target_lang,
-        )
-
-        return WordTranslationResponse(
-            translated_word=translation.text,
-            pronunciation=translation.pronunciation,
-            definitions=translation.extra_data["definitions"],
-            synonyms=translation.extra_data["synonyms"],
-            examples=translation.extra_data["examples"],
-            all_translations=translation.extra_data["all-translations"],
-            source_lang=translation.src,
-            target_lang=translation.dest,
-            word=translation.origin,
-        )
-
-
-def get_translation(text: str, source_lang: str | None, dest_lang: str) -> Translated:
+def translate(
+    text: str, source_lang: str | None, dest_lang: str
+) -> TranslationResponse:
     logger.info(
         f"Call google translate API to get translation: "
         f"text={text}; source_lang={source_lang}; dest_lang={dest_lang}"
     )
-
+    source_lang = source_lang or "auto"
     try:
-        source_lang = source_lang or "auto"
-        result = _translator.translate_legacy(text, src=source_lang, dest=dest_lang)
+        translation = _translator.translate(text, src=source_lang, dest=dest_lang)
     except ValueError as e:
         message = f"Error occurred during translating text {text}: {str(e)}"
         logger.error(message)
         raise TranslationException(message)
 
-    return result
+    return TranslationResponse(
+        translated_word=translation.text,
+        pronunciation=translation.pronunciation,
+        extra_data=translation.extra_data or {},
+        source_lang=translation.src,
+        target_lang=translation.dest,
+        word=translation.origin,
+    )

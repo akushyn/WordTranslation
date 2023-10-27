@@ -1,5 +1,4 @@
 import os
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import computed_field
 
@@ -11,6 +10,10 @@ class Settings(BaseSettings):
     sentry_environment: str = ""
     logging_handlers: list[str] = ["console"]
     logging_level: str = "DEBUG"
+
+    googletrans_service_urls: list[str] = ["translate.googleapis.com"]
+    googletrans_raise_exception: bool = False
+    googletrans_proxies: dict | None = None
 
     model_config = SettingsConfigDict(
         case_sensitive=False,

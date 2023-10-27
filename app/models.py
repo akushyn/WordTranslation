@@ -1,16 +1,17 @@
 from pydantic import BaseModel
 
 
-class WordTranslationRequest(BaseModel):
+class TranslationRequest(BaseModel):
     word: str
     target_lang: str
-    source_lang: str | None = None
+    source_lang: str = "auto"
 
 
-class WordTranslationResponse(WordTranslationRequest):
+class TranslationResponse(TranslationRequest):
     translated_word: str
     pronunciation: str | None = None
-    possible_translations: list = []
-    synonyms: list = []
-    definitions: list = []
-    examples: list = []
+    extra_data: dict
+
+
+class TranslationCreate(TranslationResponse):
+    id: int
