@@ -1,4 +1,4 @@
-from sqlalchemy import Column
+from sqlalchemy import Column, UniqueConstraint
 from sqlalchemy import Integer, String
 from sqlalchemy.dialects.postgresql import JSON
 from app.db.base import Base
@@ -6,6 +6,14 @@ from app.db.base import Base
 
 class Translation(Base):
     __tablename__ = "translations"
+    __table_args__ = (
+        UniqueConstraint(
+            "word",
+            "source_lang",
+            "target_lang",
+            name="uc_word_source_lang_target_lang",
+        ),
+    )
 
     id = Column(Integer, autoincrement=True, primary_key=True)
     word = Column(String, unique=True, index=True, nullable=False)
