@@ -25,15 +25,19 @@ class PaginateMixin(object):
     async def paginate(
         self, query: Select, page: int, per_page: int
     ) -> PaginatedResponse[Any]:
-        paginator = Paginator(self.session, query, page, per_page)  # type: ignore
+        paginator_class = self.get_paginator_class()  # type: ignore
+        paginator = paginator_class(self.session, query, page, per_page)  # type: ignore
         return await paginator.get_response()
 
 
 class TranslationService(PaginateMixin):
-    paginator_class: type[Paginator] | None = None
+    paginator_class: type[Paginator] = Paginator
 
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    def get_paginator_class(self) -> type[Paginator]:
+        return self.paginator_class or Paginator
 
     async def get_translation_by_word(
         self,
@@ -64,12 +68,7 @@ class TranslationService(PaginateMixin):
         else:
             query = query.order_by(asc(Translation.word))
 
-        if self.paginator_class:
-            return await self.paginate(query, page, per_page)
-
-        result = await self.session.execute(query)
-        translations = result.scalars().all()
-        return translations
+        return await self.paginate(query, page, per_page)
 
     async def create_translation(
         self, translation_data: TranslationResponse
