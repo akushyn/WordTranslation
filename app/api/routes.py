@@ -1,4 +1,6 @@
-from fastapi import APIRouter
+from app.models import WordTranslationRequest, WordTranslationResponse
+from fastapi import APIRouter, Depends
+from app.translation import TranslationHandler
 
 
 router = APIRouter()
@@ -9,6 +11,10 @@ async def pong():
     return {"ping": "pong!"}
 
 
-@router.get("/words/id")
-async def get_word_details(id: int):
-    pass
+@router.get("/translations/word", response_model=WordTranslationResponse)
+async def get_translation(
+    request: WordTranslationRequest = Depends(),
+) -> WordTranslationResponse:
+    handler = TranslationHandler()
+    response = handler.process(request)
+    return response
