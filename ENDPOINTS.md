@@ -309,3 +309,276 @@ Output explanation:
 
 The output represents paginated list of words translations, where `extra_data` by default is empty.
 Response object sorted by `word`.
+
+
+## `GET /api/translations/word/`
+
+**Endpoint description.** This endpoint gets or creates new word translation.
+
+Query parameters description:
+
+* `word` - (`string`) the word for translation.
+* `target_lang` - (`string`) a target language code to translate.
+* `source_lang` - (`string`) a source language code, auto detected, if not defined.
+
+Example output (JSON):
+
+```json
+{
+    "word": "challenge",
+    "target_lang": "ru",
+    "source_lang": "en",
+    "translated_word": "испытание",
+    "pronunciation": "ispytaniye",
+    "extra_data": {
+        "translation": [
+            [
+                "испытание",
+                "challenge",
+                null,
+                null,
+                10
+            ],
+            [
+                null,
+                null,
+                "ispytaniye",
+                "ˈCHalənj"
+            ]
+        ],
+        "all_translations": [
+            [
+                "имя существительное",
+                [
+                    "вызов",
+                    "проблема",
+                    "сложная задача",
+                    "отвод",
+                    "сомнение",
+                    "оклик",
+                    "вызов на дуэль",
+                    "опознавательные сигналы"
+                ]
+            ],
+            [
+                "глагол",
+                [
+                    "оспаривать",
+                    "бросать вызов",
+                    "подвергать сомнению",
+                    "вызывать",
+                    "требовать",
+                    "окликать",
+                    "спрашивать пропуск",
+                    "спрашивать пароль",
+                    "сомневаться",
+                    "отрицать",
+                    "давать отвод присяжным"
+                ],
+                ...
+                "challenge",
+                2
+            ]
+        ],
+        "possible_translations": [
+            [...]
+        ],
+        "possible_mistakes": null,
+        "synonyms": [
+            [
+                "имя существительное",
+                [
+                    [
+                        [
+                            "dare",
+                            "provocation",
+                            "summons"
+                        ],
+                        "m_en_gbus0167500.006"
+                    ],
+                    [
+                        [
+                            "problem",
+                            "difficult task",
+                            "test",
+                            "trial",
+                            "trouble",
+                            "bother",
+                            "obstacle"
+                        ],
+                        "m_en_gbus0167500.009"
+                    ],
+                    [
+                        [
+                            "confrontation with",
+                            "dispute with",
+                            "stand against",
+                            "test of",
+                            "opposition",
+                            "disagreement with",
+                            "questioning of",
+                            "defiance",
+                            "ultimatum"
+                        ],
+                        "m_en_gbus0167500.012"
+                    ]
+                ],
+                "challenge",
+                1
+            ]
+        ],
+        "definitions": [
+            [
+                "имя существительное",
+                [
+                    [
+                        "a call to take part in a contest or competition, especially a duel.",
+                        "m_en_gbus0167500.006",
+                        "he accepted the challenge"
+                    ],
+                    [
+                        "an objection or query as to the truth of something, often with an implicit demand for proof.",
+                        "m_en_gbus0167500.012",
+                        "a challenge to the legality of the order"
+                    ],
+                    [
+                        "exposure of the immune system to pathogenic organisms or antigens.",
+                        "m_en_gbus0167500.016",
+                        "recently vaccinated calves should be protected from challenge",
+                        [
+                            null,
+                            null,
+                            [
+                                "Medicine"
+                            ]
+                        ]
+                    ]
+                ],
+                "challenge",
+                1
+            ]
+        ],
+        "examples": [
+        ]
+    },
+    "id": 15
+}
+```
+
+## `GET /api/languages/`
+
+**Endpoint description.** This endpoint gets a list of supported languages.
+
+Example output (JSON):
+
+```json
+{
+    "af": "afrikaans",
+    "sq": "albanian",
+    "am": "amharic",
+    "ar": "arabic",
+    "hy": "armenian",
+    "az": "azerbaijani",
+    "eu": "basque",
+    "be": "belarusian",
+    "bn": "bengali",
+    "bs": "bosnian",
+    "bg": "bulgarian",
+    "ca": "catalan",
+    "ceb": "cebuano",
+    "ny": "chichewa",
+    "zh-cn": "chinese (simplified)",
+    "zh-tw": "chinese (traditional)",
+    "co": "corsican",
+    "hr": "croatian",
+    "cs": "czech",
+    "da": "danish",
+    "nl": "dutch",
+    "en": "english",
+    "eo": "esperanto",
+    "et": "estonian",
+    "tl": "filipino",
+    "fi": "finnish",
+    "fr": "french",
+    "fy": "frisian",
+    "gl": "galician",
+    "ka": "georgian",
+    "de": "german",
+    "el": "greek",
+    "gu": "gujarati",
+    "ht": "haitian creole",
+    "ha": "hausa",
+    "haw": "hawaiian",
+    "iw": "hebrew",
+    "he": "hebrew",
+    "hi": "hindi",
+    "hmn": "hmong",
+    "hu": "hungarian",
+    "is": "icelandic",
+    "ig": "igbo",
+    "id": "indonesian",
+    "ga": "irish",
+    "it": "italian",
+    "ja": "japanese",
+    "jw": "javanese",
+    "kn": "kannada",
+    "kk": "kazakh",
+    "km": "khmer",
+    "ko": "korean",
+    "ku": "kurdish (kurmanji)",
+    "ky": "kyrgyz",
+    "lo": "lao",
+    "la": "latin",
+    "lv": "latvian",
+    "lt": "lithuanian",
+    "lb": "luxembourgish",
+    "mk": "macedonian",
+    "mg": "malagasy",
+    "ms": "malay",
+    "ml": "malayalam",
+    "mt": "maltese",
+    "mi": "maori",
+    "mr": "marathi",
+    "mn": "mongolian",
+    "my": "myanmar (burmese)",
+    "ne": "nepali",
+    "no": "norwegian",
+    "or": "odia",
+    "ps": "pashto",
+    "fa": "persian",
+    "pl": "polish",
+    "pt": "portuguese",
+    "pa": "punjabi",
+    "ro": "romanian",
+    "ru": "russian",
+    "sm": "samoan",
+    "gd": "scots gaelic",
+    "sr": "serbian",
+    "st": "sesotho",
+    "sn": "shona",
+    "sd": "sindhi",
+    "si": "sinhala",
+    "sk": "slovak",
+    "sl": "slovenian",
+    "so": "somali",
+    "es": "spanish",
+    "su": "sundanese",
+    "sw": "swahili",
+    "sv": "swedish",
+    "tg": "tajik",
+    "ta": "tamil",
+    "te": "telugu",
+    "th": "thai",
+    "tr": "turkish",
+    "uk": "ukrainian",
+    "ur": "urdu",
+    "ug": "uyghur",
+    "uz": "uzbek",
+    "vi": "vietnamese",
+    "cy": "welsh",
+    "xh": "xhosa",
+    "yi": "yiddish",
+    "yo": "yoruba",
+    "zu": "zulu"
+}
+```
