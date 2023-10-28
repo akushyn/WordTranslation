@@ -12,7 +12,10 @@ services:
     volumes:
       - .:/app
     environment:
-      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/word_db
+      NO_DOT_ENV: 1
+      UVICORN_HOST: "0.0.0.0"
+      UVICORN_PORT: 8000
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/word_db
     depends_on:
       - db
 

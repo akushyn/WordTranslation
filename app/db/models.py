@@ -16,7 +16,7 @@ class Translation(Base):
     )
 
     id = Column(Integer, autoincrement=True, primary_key=True)
-    word = Column(String, unique=True, index=True, nullable=False)
+    word = Column(String, index=True, nullable=False)
     translated_word = Column(String, index=True, nullable=False)
     pronunciation = Column(String)
     source_lang = Column(String)
