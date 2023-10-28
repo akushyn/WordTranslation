@@ -96,7 +96,7 @@ Run service. Then run:
 curl --request GET \
   --url 'http://127.0.0.1:8000/api/translations/word?target_lang=ru&word=challenge'
 ```
-See full list of available [endpoints](ENDPOINTS.md) or API calls [examples](EXAMPLES.md).
+See full list of available [endpoints](ENDPOINTS.md).
 
 ## Pre-commit
 
