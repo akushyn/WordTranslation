@@ -11,12 +11,13 @@ from app.models import (
 )
 from app.services import TranslationService
 from fastapi import APIRouter, Depends
+from googletrans import LANGUAGES
 
 
 router = APIRouter()
 
 
-@router.get("/translations/word", response_model=TranslationCreate)
+@router.get("/translations/word/", response_model=TranslationCreate)
 async def get_translation(
     request: TranslationRequest = Depends(),
     session: AsyncSession = Depends(get_session),
@@ -29,7 +30,7 @@ async def get_translation(
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.delete("/translations/word")
+@router.delete("/translations/word/")
 async def delete_translation(
     request: TranslationRequest = Depends(),
     session: AsyncSession = Depends(get_session),
@@ -40,7 +41,7 @@ async def delete_translation(
 
 
 @router.get(
-    "/translations",
+    "/translations/",
     response_model=PaginatedResponse[dict],
 )
 async def get_translations(
@@ -63,3 +64,8 @@ async def get_translations(
         extra=include_extra,
     )
     return response
+
+
+@router.get("/languages/")
+async def get_languages() -> dict:
+    return LANGUAGES
