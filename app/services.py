@@ -82,7 +82,7 @@ class TranslationService(PaginateMixin):
                 "source_lang": item.source_lang,
                 "translated_word": item.translated_word,
                 "pronunciation": item.pronunciation,
-                "extra_data": ExtraData.model_validate(item).model_dump(
+                "extra_data": ExtraData.from_orm(item).dict(
                     include=include_extra_fields, exclude_unset=True, exclude_none=True
                 ),
             }
@@ -93,7 +93,7 @@ class TranslationService(PaginateMixin):
     async def create_translation(
         self, translation_data: TranslationResponse
     ) -> Translation:
-        translation = Translation(**translation_data.model_dump())
+        translation = Translation(**translation_data.dict())
         self.session.add(translation)
         try:
             await self.session.commit()

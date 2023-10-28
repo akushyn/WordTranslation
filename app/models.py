@@ -1,5 +1,5 @@
 from typing import Generic, TypeVar
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field
 
 
 class TranslationRequest(BaseModel):
@@ -9,8 +9,6 @@ class TranslationRequest(BaseModel):
 
 
 class ExtraData(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     translation: list | None = None
     all_translations: list | None = None
     possible_translations: list | None = None
@@ -18,6 +16,9 @@ class ExtraData(BaseModel):
     synonyms: list | None = None
     definitions: list | None = None
     examples: list | None = None
+
+    class Config:
+        orm_mode = True
 
 
 class IncludeExtra(BaseModel):
@@ -32,9 +33,7 @@ class IncludeExtra(BaseModel):
 
     @property
     def true_attributes(self) -> set:
-        true_attributes = set(
-            attr for attr, value in self.model_dump().items() if value
-        )
+        true_attributes = set(attr for attr, value in self.dict().items() if value)
         return true_attributes
 
 

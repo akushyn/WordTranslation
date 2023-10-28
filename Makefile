@@ -90,6 +90,8 @@ clean:
 	rm -f `find . -type f -name '*.rej' `
 	rm -f `find . -type f -name '*.egg-info' `
 	rm -rf coverage
+	rm -rf .coverage
+	rm -rf */.pytest_cache
 	rm -rf cover
 	rm -rf htmlcov
 	rm -rf .cache

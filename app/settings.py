@@ -1,6 +1,5 @@
 import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import computed_field
+from pydantic.env_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -18,17 +17,14 @@ class Settings(BaseSettings):
     pagination_per_page: int = 10
     pagination_per_page_max: int = 100
 
-    model_config = SettingsConfigDict(
-        case_sensitive=False,
+    class Config:
         # Usage of .env file may be disabled by NO_DOT_ENV environment
         # variable to avoid confusions and errors with double reading and
         # extra variables when using Docker Compose or any other upper layer
         # that reads .env file.
-        env_file=".env" if not os.getenv("NO_DOT_ENV", "") else None,
-        env_file_encoding="utf-8",
-    )
+        env_file = ".env" if not os.getenv("NO_DOT_ENV", "") else None
+        env_file_encoding = "utf-8"
 
-    @computed_field  # type: ignore[misc]
     @property
     def logging(self) -> dict:
         return {

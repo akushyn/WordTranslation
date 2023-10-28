@@ -1,11 +1,21 @@
+googletrans==3.1.0a0
+anyio==3.7.0
+httpx==0.13.3
+
+# 0.87.0
+# Highlights of this release:
+# Upgraded Starlette
+# Now the TestClient is based on HTTPX instead of Requests. 🚀
+# There are some possible breaking changes in the TestClient
+fastapi==0.86.0
+pydantic
+requests
 alembic
 black
-googletrans==3.1.0a0
-fastapi
-pydantic-settings
 sqlalchemy[postgresql_asyncpg]
 uvicorn[standard]
 sentry-sdk[fastapi]
 pytest
 pytest-cov
-pre-commit
+pytest-xdist
+pytest-asyncio
