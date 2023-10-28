@@ -5,7 +5,6 @@ from pydantic import computed_field
 
 class Settings(BaseSettings):
     database_url: str = ""
-    echo_sql: bool = False
     sentry_dsn: str = ""
     sentry_environment: str = ""
     logging_handlers: list[str] = ["console"]
