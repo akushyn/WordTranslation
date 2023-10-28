@@ -10,6 +10,8 @@ from app.models import (
     TranslationResponse,
     TranslationCreate,
     PaginatedResponse,
+    ExtraData,
+    IncludeExtra,
 )
 from app.translation import translate
 from sqlalchemy import desc, asc, select
@@ -57,7 +59,8 @@ class TranslationService(PaginateMixin):
         per_page: int = 10,
         sort_desc: bool = False,
         search: str = "",
-    ) -> PaginatedResponse[TranslationResponse]:
+        extra: IncludeExtra = IncludeExtra(),
+    ) -> PaginatedResponse[dict]:
         query = select(Translation)
 
         if search:
@@ -68,7 +71,24 @@ class TranslationService(PaginateMixin):
         else:
             query = query.order_by(asc(Translation.word))
 
-        return await self.paginate(query, page, per_page)
+        paginate = await self.paginate(query, page, per_page)
+        include_extra_fields = extra.true_attributes
+
+        # update paginate items and include only passed extras
+        paginate.items = [
+            {
+                "word": item.word,
+                "target_lang": item.target_lang,
+                "source_lang": item.source_lang,
+                "translated_word": item.translated_word,
+                "pronunciation": item.pronunciation,
+                "extra_data": ExtraData.model_validate(item).model_dump(
+                    include=include_extra_fields, exclude_unset=True, exclude_none=True
+                ),
+            }
+            for item in paginate.items
+        ]
+        return paginate
 
     async def create_translation(
         self, translation_data: TranslationResponse
@@ -106,7 +126,7 @@ class TranslationService(PaginateMixin):
             word=str(translation.word),
             pronunciation=translation.pronunciation,  # type: ignore
             translated_word=str(translation.translated_word),
-            extra_data=dict(translation.extra_data),
+            extra_data=ExtraData(**translation.extra_data),
             source_lang=str(translation.source_lang),
             target_lang=str(translation.target_lang),
         )

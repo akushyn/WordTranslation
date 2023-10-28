@@ -1,4 +1,3 @@
-from app.paginator import Paginator
 from app.settings import settings
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.base import get_session
@@ -7,7 +6,7 @@ from app.models import (
     TranslationRequest,
     TranslationCreate,
     PaginatedResponse,
-    TranslationResponse,
+    IncludeExtra,
 )
 from app.services import TranslationService
 from fastapi import APIRouter, Depends
@@ -38,7 +37,7 @@ async def delete_translation(
 
 @router.get(
     "/translations",
-    response_model=PaginatedResponse[TranslationResponse],
+    response_model=PaginatedResponse[dict],
 )
 async def get_translations(
     page: int = Query(1, ge=0),
@@ -47,14 +46,16 @@ async def get_translations(
     ),
     sort_desc: bool = settings.pagination_sort_desc,
     search: str = Query(default=""),
+    include_extra: IncludeExtra = Depends(),
     session: AsyncSession = Depends(get_session),
-) -> PaginatedResponse[TranslationResponse]:
+) -> PaginatedResponse[dict]:
     service = TranslationService(session=session)
-    service.paginator_class = Paginator
 
-    return await service.get_translations(
+    response = await service.get_translations(
         page=page,
         per_page=per_page,
         sort_desc=sort_desc,
         search=search,
+        extra=include_extra,
     )
+    return response
