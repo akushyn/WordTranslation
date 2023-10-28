@@ -1,11 +1,27 @@
 from typing import Generic, TypeVar
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
+from googletrans import LANGUAGES
 
 
 class TranslationRequest(BaseModel):
     word: str
     target_lang: str
     source_lang: str | None = None
+
+    @validator("target_lang")
+    def validate_target_lang(cls, value):
+        if value not in LANGUAGES.keys():
+            raise ValueError(
+                f"Invalid target language: {value}. "
+                f"Must be one of [{', '.join(LANGUAGES.keys())}]"
+            )
+        return value
+
+    @validator("word")
+    def validate_word(cls, value):
+        if len(value.split()) > 1:
+            raise ValueError("Multiple words translation is not supported")
+        return value
 
 
 class ExtraData(BaseModel):
