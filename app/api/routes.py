@@ -1,7 +1,8 @@
+from app.exceptions import TranslationException, DuplicateTranslationException
 from app.settings import settings
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.base import get_session
-from fastapi import Query
+from fastapi import Query, HTTPException
 from app.models import (
     TranslationRequest,
     TranslationCreate,
@@ -21,8 +22,11 @@ async def get_translation(
     session: AsyncSession = Depends(get_session),
 ) -> TranslationCreate:
     service = TranslationService(session)
-    response = await service.get_or_create_translation(request)
-    return response
+    try:
+        response = await service.get_or_create_translation(request)
+        return response
+    except (TranslationException, DuplicateTranslationException) as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.delete("/translations/word")
