@@ -58,6 +58,11 @@ class Settings(BaseSettings):
                     "handlers": self.logging_handlers,
                     "propagate": True,
                 },
+                "sqlalchemy.engine": {
+                    "level": "DEBUG",
+                    "handlers": self.logging_handlers,
+                    "propagate": True,
+                },
             },
         }
 
