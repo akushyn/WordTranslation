@@ -102,3 +102,26 @@ clean:
 	rm -rf venv
 	rm -rf venv.pre-commit
 	rm -rf venv.lint
+
+
+.PHONY: help
+help:
+	@echo "Available targets:"
+	@echo
+	@echo "venv                   - Create virtual environment and install project dependencies."
+	@echo "venv.pre-commit        - Create virtual environment and install pre-commit hooks."
+	@echo "venv.lint              - Create virtual environment and install linting dependencies."
+	@echo "update-requirements    - Update project dependencies and requirements.txt."
+	@echo "pre-commit-install     - Install and configure pre-commit hooks."
+	@echo "pre-commit-autoupdate  - Update pre-commit hooks."
+	@echo "pre-commit-run-all     - Run all configured pre-commit hooks."
+	@echo "lint-black             - Lint the code using the Black code formatter."
+	@echo "lint-ruff              - Lint the code using the Ruff linter."
+	@echo "lint-mypy              - Lint the code using the MyPy static type checker."
+	@echo "lint                   - Run all linting targets (lint-black, lint-ruff, lint-mypy)."
+	@echo "ruff-fix               - Automatically fix issues using the Ruff linter."
+	@echo "test                   - Run tests using pytest."
+	@echo "test-coverage          - Run tests with code coverage analysis using pytest."
+	@echo "test-real              - Run tests marked with the 'real' marker."
+	@echo "run                    - Start the application using Uvicorn with auto-reloading."
+	@echo "clean                  - Remove temporary and generated files and directories."
