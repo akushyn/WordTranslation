@@ -1,0 +1,11 @@
+[tool.black]
+target-version = ["py310"]
+
+[tool.ruff]
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "I",   # isort
+]
