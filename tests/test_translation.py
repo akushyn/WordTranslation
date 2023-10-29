@@ -1,4 +1,5 @@
 import pytest
+
 from app.models import TranslationResponse
 from app.translation import translate
 

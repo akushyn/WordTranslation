@@ -1,9 +1,11 @@
-from app.middlewares import PaginationMiddleware
-from fastapi import FastAPI
-from app.api import routes
 import logging.config
-from app.settings import settings
+
 import sentry_sdk
+from fastapi import FastAPI
+
+from app.api import routes
+from app.middlewares import PaginationMiddleware
+from app.settings import settings
 
 
 def create_app():

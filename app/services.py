@@ -1,29 +1,28 @@
 import logging
 from typing import Any
 
-from app.paginator import Paginator
 from fastapi import HTTPException, Response
+from sqlalchemy import Select, asc, desc, select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.db.models import Translation
 from app.exceptions import DuplicateTranslationException
 from app.models import (
-    TranslationRequest,
-    TranslationResponse,
-    TranslationCreate,
-    PaginatedResponse,
     ExtraData,
     IncludeExtra,
+    PaginatedResponse,
+    TranslationCreate,
+    TranslationRequest,
+    TranslationResponse,
 )
+from app.paginator import Paginator
 from app.translation import translate
-from sqlalchemy import desc, asc, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import Select
-
 
 logger = logging.getLogger(__name__)
 
 
-class PaginateMixin(object):
+class PaginateMixin:
     async def paginate(
         self, query: Select, page: int, per_page: int
     ) -> PaginatedResponse[Any]:
@@ -59,8 +58,9 @@ class TranslationService(PaginateMixin):
         per_page: int = 10,
         sort_desc: bool = False,
         search: str = "",
-        extra: IncludeExtra = IncludeExtra(),
+        extra: IncludeExtra | None = None,
     ) -> PaginatedResponse[dict]:
+        extra = extra or IncludeExtra()
         query = select(Translation)
 
         if search:
@@ -102,7 +102,7 @@ class TranslationService(PaginateMixin):
             await self.session.rollback()
             message = f"The translation already exists: {str(e)}"
             logger.error(message)
-            raise DuplicateTranslationException(message)
+            raise DuplicateTranslationException(message) from e
 
     async def get_or_create_translation(
         self, request: TranslationRequest

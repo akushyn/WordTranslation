@@ -2,8 +2,9 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from app.db.base import Base, async_engine
+
 from app.db import models  # noqa: F401
+from app.db.base import Base, async_engine
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

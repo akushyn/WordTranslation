@@ -1,8 +1,8 @@
-from sqlalchemy import Column, UniqueConstraint
-from sqlalchemy import Integer, String
+from sqlalchemy import Column, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSON
-from app.db.base import Base
 from sqlalchemy.ext.hybrid import hybrid_property
+
+from app.db.base import Base
 
 
 class Translation(Base):

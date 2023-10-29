@@ -1,6 +1,7 @@
-from .middlewares import request_object
+from sqlalchemy import Select, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import Select, select, func
+
+from .middlewares import request_object
 from .models import PaginatedResponse
 
 

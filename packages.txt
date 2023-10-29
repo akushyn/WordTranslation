@@ -19,3 +19,4 @@ pytest
 pytest-cov
 pytest-xdist
 pytest-asyncio
+faker

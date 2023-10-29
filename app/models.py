@@ -1,6 +1,7 @@
 from typing import Generic, TypeVar
-from pydantic import BaseModel, Field, validator
-from googletrans import LANGUAGES
+
+from googletrans import LANGUAGES  # type: ignore
+from pydantic import BaseModel, validator
 
 
 class TranslationRequest(BaseModel):
@@ -67,10 +68,10 @@ T = TypeVar("T")
 
 
 class PaginatedResponse(BaseModel, Generic[T]):
-    count: int = Field(description="Items count")
-    page_num: int = Field(description="Page number")
-    per_page: int = Field(description="Items per page")
-    pages: int = Field(description="Pages count")
-    items: list[T] = Field(description="Response Items")
+    count: int
+    page_num: int
+    per_page: int
+    pages: int
+    items: list[T]
     next: str | None
     previous: str | None

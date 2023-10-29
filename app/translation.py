@@ -1,9 +1,10 @@
 import logging
-from app.models import TranslationResponse, ExtraData
-from googletrans import Translator  # type: ignore
-from app.exceptions import TranslationException
-from app.settings import settings
 
+from googletrans import Translator  # type: ignore
+
+from app.exceptions import TranslationException
+from app.models import ExtraData, TranslationResponse
+from app.settings import settings
 
 _translator = Translator(
     service_urls=settings.googletrans_service_urls,
@@ -27,7 +28,7 @@ def translate(
     except ValueError as e:
         message = f"Error occurred during translating text {text}: {str(e)}"
         logger.error(message)
-        raise TranslationException(message)
+        raise TranslationException(message) from e
 
     extra_data = ExtraData(
         translation=translation.extra_data["translation"],

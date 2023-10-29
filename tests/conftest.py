@@ -1,5 +1,8 @@
 import pytest
+from faker import Faker
 from fastapi.testclient import TestClient
+
+faker = Faker()
 
 
 # Use autouse=True here to force read and apply app.settings

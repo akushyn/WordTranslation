@@ -1,40 +1,45 @@
-from app.exceptions import TranslationException, DuplicateTranslationException
-from app.settings import settings
+from fastapi import APIRouter, Depends, HTTPException, Query
+from googletrans import LANGUAGES  # type: ignore
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.db.base import get_session
-from fastapi import Query, HTTPException
+from app.exceptions import DuplicateTranslationException, TranslationException
 from app.models import (
-    TranslationRequest,
-    TranslationCreate,
-    PaginatedResponse,
     IncludeExtra,
+    PaginatedResponse,
+    TranslationCreate,
+    TranslationRequest,
 )
 from app.services import TranslationService
-from fastapi import APIRouter, Depends
-from googletrans import LANGUAGES
-
+from app.settings import settings
 
 router = APIRouter()
 
 
 @router.get("/translations/word/", response_model=TranslationCreate)
 async def get_translation(
-    request: TranslationRequest = Depends(),
-    session: AsyncSession = Depends(get_session),
+    request: TranslationRequest | None = None,
+    session: AsyncSession | None = None,
 ) -> TranslationCreate:
+    request = request or Depends()
+    session = session or Depends(get_session)
+
     service = TranslationService(session)
     try:
         response = await service.get_or_create_translation(request)
         return response
     except (TranslationException, DuplicateTranslationException) as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.delete("/translations/word/")
 async def delete_translation(
-    request: TranslationRequest = Depends(),
-    session: AsyncSession = Depends(get_session),
+    request: TranslationRequest | None = None,
+    session: AsyncSession | None = None,
 ):
+    request = request or Depends()
+    session = session or Depends(get_session)
+
     service = TranslationService(session)
     response = await service.delete_translation(request)
     return response
@@ -51,11 +56,13 @@ async def get_translations(
     ),
     sort_desc: bool = settings.pagination_sort_desc,
     search: str = Query(default=""),
-    include_extra: IncludeExtra = Depends(),
-    session: AsyncSession = Depends(get_session),
+    include_extra: IncludeExtra | None = None,
+    session: AsyncSession | None = None,
 ) -> PaginatedResponse[dict]:
-    service = TranslationService(session=session)
+    include_extra = include_extra or Depends()
+    session = session or Depends(get_session)
 
+    service = TranslationService(session=session)
     response = await service.get_translations(
         page=page,
         per_page=per_page,
