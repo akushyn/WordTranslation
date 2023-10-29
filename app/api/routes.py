@@ -18,12 +18,9 @@ router = APIRouter()
 
 @router.get("/translations/word/", response_model=TranslationCreate)
 async def get_translation(
-    request: TranslationRequest | None = None,
-    session: AsyncSession | None = None,
+    request: TranslationRequest = Depends(),
+    session: AsyncSession = Depends(get_session),
 ) -> TranslationCreate:
-    request = request or Depends()
-    session = session or Depends(get_session)
-
     service = TranslationService(session)
     try:
         response = await service.get_or_create_translation(request)
@@ -34,12 +31,9 @@ async def get_translation(
 
 @router.delete("/translations/word/")
 async def delete_translation(
-    request: TranslationRequest | None = None,
-    session: AsyncSession | None = None,
+    request: TranslationRequest = Depends(),
+    session: AsyncSession = Depends(get_session),
 ):
-    request = request or Depends()
-    session = session or Depends(get_session)
-
     service = TranslationService(session)
     response = await service.delete_translation(request)
     return response
@@ -56,12 +50,9 @@ async def get_translations(
     ),
     sort_desc: bool = settings.pagination_sort_desc,
     search: str = Query(default=""),
-    include_extra: IncludeExtra | None = None,
-    session: AsyncSession | None = None,
+    include_extra: IncludeExtra = Depends(),
+    session: AsyncSession = Depends(get_session),
 ) -> PaginatedResponse[dict]:
-    include_extra = include_extra or Depends()
-    session = session or Depends(get_session)
-
     service = TranslationService(session=session)
     response = await service.get_translations(
         page=page,

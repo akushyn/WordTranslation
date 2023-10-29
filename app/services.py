@@ -58,9 +58,8 @@ class TranslationService(PaginateMixin):
         per_page: int = 10,
         sort_desc: bool = False,
         search: str = "",
-        extra: IncludeExtra | None = None,
+        extra: IncludeExtra = IncludeExtra(),
     ) -> PaginatedResponse[dict]:
-        extra = extra or IncludeExtra()
         query = select(Translation)
 
         if search:
