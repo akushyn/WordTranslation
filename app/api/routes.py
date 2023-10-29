@@ -3,7 +3,11 @@ from googletrans import LANGUAGES  # type: ignore
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.base import get_session
-from app.exceptions import DuplicateTranslationException, TranslationException
+from app.exceptions import (
+    DuplicateTranslationException,
+    TranslationException,
+    TranslationNotFoundException,
+)
 from app.models import (
     IncludeExtra,
     PaginatedResponse,
@@ -35,7 +39,11 @@ async def delete_translation(
     session: AsyncSession = Depends(get_session),
 ):
     service = TranslationService(session)
-    response = await service.delete_translation(request)
+    try:
+        response = await service.delete_translation(request)
+    except TranslationNotFoundException as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+
     return response
 
 

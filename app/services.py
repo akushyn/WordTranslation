@@ -1,13 +1,13 @@
 import logging
 from typing import Any
 
-from fastapi import HTTPException, Response
+from fastapi import Response
 from sqlalchemy import Select, asc, desc, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.models import Translation
-from app.exceptions import DuplicateTranslationException
+from app.exceptions import DuplicateTranslationException, TranslationNotFoundException
 from app.models import (
     ExtraData,
     IncludeExtra,
@@ -136,7 +136,9 @@ class TranslationService(PaginateMixin):
             target_lang=request.target_lang,
         )
         if not translation:
-            raise HTTPException(status_code=404, detail="Translation not found")
+            raise TranslationNotFoundException(
+                f"Translation not found: {request.dict()}"
+            )
 
         await self.session.delete(translation)
         await self.session.commit()
