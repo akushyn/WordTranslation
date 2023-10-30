@@ -1,4 +1,14 @@
+from unittest.mock import AsyncMock, patch
+
 import pytest
+
+from app.models import TranslationRequest
+
+
+@pytest.fixture
+def mock_request():
+    request = TranslationRequest(word="challenge", target_lang="ru", source_lang="en")
+    return request
 
 
 @pytest.mark.real
@@ -116,3 +126,40 @@ def test_get_languages(client):
         "zh-tw": "chinese (traditional)",
         "zu": "zulu",
     }
+
+
+@patch(
+    "app.api.routes.TranslationService.get_or_create_translation",
+    new_callable=AsyncMock,
+)
+def test_get_translation(mock_get_or_create_translation, mock_request, client):
+    mock_get_or_create_translation.return_value = {
+        "id": 123,
+        "word": "challenge",
+        "translated_word": "испытание",
+        "target_lang": "ru",
+        "source_lang": "en",
+        "extra_data": mock_request.dict(),
+    }
+
+    response = client.get("/api/translations/word/", params=mock_request.dict())
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "word": "challenge",
+        "target_lang": "ru",
+        "source_lang": "en",
+        "translated_word": "испытание",
+        "pronunciation": None,
+        "extra_data": {
+            "translation": None,
+            "all_translations": None,
+            "possible_translations": None,
+            "possible_mistakes": None,
+            "synonyms": None,
+            "definitions": None,
+            "examples": None,
+        },
+        "id": 123,
+    }
+    mock_get_or_create_translation.assert_called_once_with(mock_request)
