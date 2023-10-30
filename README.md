@@ -29,6 +29,10 @@ Run service:
 
     make run
 
+Upgrade database to head revision:
+
+    alembic upgrade head
+
 Note: set environment variables using `.env` file.
 
 ## Run in Docker Compose
@@ -46,6 +50,10 @@ Run tests:
 Run service:
 
     docker compose up
+
+Apply database migrations:
+
+    docker <app-container-id> alembic upgrade head
 
 Note: set environment variables using `.env` file.
 
