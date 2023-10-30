@@ -62,6 +62,10 @@ lint: lint-black lint-ruff lint-mypy
 ruff-fix: venv.lint
 	$(VENV_LINT_BIN)/ruff --fix $(PACKAGE) $(TESTS) $(MIGRATIONS)
 
+.PHONY: black-fix
+black-fix: venv.lint
+	$(VENV_LINT_BIN)/black $(PACKAGE) $(TESTS) $(MIGRATIONS)
+
 .PHONY: test
 test: venv
 	$(VENV_BIN)/pytest $(PYTEST_OPTS) $(TESTS)
