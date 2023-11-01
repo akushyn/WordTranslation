@@ -16,143 +16,146 @@ Example output (JSON):
 
 ```json
 {
-    "word": "challenge",
-    "target_lang": "ru",
-    "source_lang": "en",
-    "translated_word": "испытание",
-    "pronunciation": "ispytaniye",
-    "extra_data": {
-        "translation": [
-            [
-                "испытание",
-                "challenge",
-                null,
-                null,
-                10
-            ],
-            [
-                null,
-                null,
-                "ispytaniye",
-                "ˈCHalənj"
-            ]
-        ],
-        "all_translations": [
-            [
-                "имя существительное",
-                [
-                    "вызов",
-                    "проблема",
-                    "сложная задача",
-                    "отвод",
-                    "сомнение",
-                    "оклик",
-                    "вызов на дуэль",
-                    "опознавательные сигналы"
-                ]
-            ],
-            [
-                "глагол",
-                [
-                    "оспаривать",
-                    "бросать вызов",
-                    "подвергать сомнению",
-                    "вызывать",
-                    "требовать",
-                    "окликать",
-                    "спрашивать пропуск",
-                    "спрашивать пароль",
-                    "сомневаться",
-                    "отрицать",
-                    "давать отвод присяжным"
-                ],
-                ...
-                "challenge",
-                2
-            ]
-        ],
-        "possible_translations": [
-            [...]
-        ],
-        "possible_mistakes": null,
-        "synonyms": [
-            [
-                "имя существительное",
-                [
-                    [
-                        [
-                            "dare",
-                            "provocation",
-                            "summons"
-                        ],
-                        "m_en_gbus0167500.006"
-                    ],
-                    [
-                        [
-                            "problem",
-                            "difficult task",
-                            "test",
-                            "trial",
-                            "trouble",
-                            "bother",
-                            "obstacle"
-                        ],
-                        "m_en_gbus0167500.009"
-                    ],
-                    [
-                        [
-                            "confrontation with",
-                            "dispute with",
-                            "stand against",
-                            "test of",
-                            "opposition",
-                            "disagreement with",
-                            "questioning of",
-                            "defiance",
-                            "ultimatum"
-                        ],
-                        "m_en_gbus0167500.012"
-                    ]
-                ],
-                "challenge",
-                1
-            ]
-        ],
-        "definitions": [
-            [
-                "имя существительное",
-                [
-                    [
-                        "a call to take part in a contest or competition, especially a duel.",
-                        "m_en_gbus0167500.006",
-                        "he accepted the challenge"
-                    ],
-                    [
-                        "an objection or query as to the truth of something, often with an implicit demand for proof.",
-                        "m_en_gbus0167500.012",
-                        "a challenge to the legality of the order"
-                    ],
-                    [
-                        "exposure of the immune system to pathogenic organisms or antigens.",
-                        "m_en_gbus0167500.016",
-                        "recently vaccinated calves should be protected from challenge",
-                        [
-                            null,
-                            null,
-                            [
-                                "Medicine"
-                            ]
-                        ]
-                    ]
-                ],
-                "challenge",
-                1
-            ]
-        ],
-        "examples": [
-        ]
-    },
-    "id": 15
+    "status": "success",
+    "result": {
+      "word": "challenge",
+      "target_lang": "ru",
+      "source_lang": "en",
+      "translated_word": "испытание",
+      "pronunciation": "ispytaniye",
+      "extra_data": {
+          "translation": [
+              [
+                  "испытание",
+                  "challenge",
+                  null,
+                  null,
+                  10
+              ],
+              [
+                  null,
+                  null,
+                  "ispytaniye",
+                  "ˈCHalənj"
+              ]
+          ],
+          "all_translations": [
+              [
+                  "имя существительное",
+                  [
+                      "вызов",
+                      "проблема",
+                      "сложная задача",
+                      "отвод",
+                      "сомнение",
+                      "оклик",
+                      "вызов на дуэль",
+                      "опознавательные сигналы"
+                  ]
+              ],
+              [
+                  "глагол",
+                  [
+                      "оспаривать",
+                      "бросать вызов",
+                      "подвергать сомнению",
+                      "вызывать",
+                      "требовать",
+                      "окликать",
+                      "спрашивать пропуск",
+                      "спрашивать пароль",
+                      "сомневаться",
+                      "отрицать",
+                      "давать отвод присяжным"
+                  ],
+                  ...
+                  "challenge",
+                  2
+              ]
+          ],
+          "possible_translations": [
+              [...]
+          ],
+          "possible_mistakes": null,
+          "synonyms": [
+              [
+                  "имя существительное",
+                  [
+                      [
+                          [
+                              "dare",
+                              "provocation",
+                              "summons"
+                          ],
+                          "m_en_gbus0167500.006"
+                      ],
+                      [
+                          [
+                              "problem",
+                              "difficult task",
+                              "test",
+                              "trial",
+                              "trouble",
+                              "bother",
+                              "obstacle"
+                          ],
+                          "m_en_gbus0167500.009"
+                      ],
+                      [
+                          [
+                              "confrontation with",
+                              "dispute with",
+                              "stand against",
+                              "test of",
+                              "opposition",
+                              "disagreement with",
+                              "questioning of",
+                              "defiance",
+                              "ultimatum"
+                          ],
+                          "m_en_gbus0167500.012"
+                      ]
+                  ],
+                  "challenge",
+                  1
+              ]
+          ],
+          "definitions": [
+              [
+                  "имя существительное",
+                  [
+                      [
+                          "a call to take part in a contest or competition, especially a duel.",
+                          "m_en_gbus0167500.006",
+                          "he accepted the challenge"
+                      ],
+                      [
+                          "an objection or query as to the truth of something, often with an implicit demand for proof.",
+                          "m_en_gbus0167500.012",
+                          "a challenge to the legality of the order"
+                      ],
+                      [
+                          "exposure of the immune system to pathogenic organisms or antigens.",
+                          "m_en_gbus0167500.016",
+                          "recently vaccinated calves should be protected from challenge",
+                          [
+                              null,
+                              null,
+                              [
+                                  "Medicine"
+                              ]
+                          ]
+                      ]
+                  ],
+                  "challenge",
+                  1
+              ]
+          ],
+          "examples": [
+          ]
+      },
+      "id": 15
+    }
 }
 ```
 
@@ -427,3 +430,205 @@ Example output (JSON):
     "zu": "zulu"
 }
 ```
+
+
+## `POST /api/translations/words/`
+
+**Endpoint description.** Batch words translation processing endpoint API
+
+Payload (JSON):
+
+```json
+{
+  "blocks": [
+      {
+          "word": "hello",
+          "target_lang": "ru"
+      },
+      {
+          "word": "dear",
+          "target_lang": "ru"
+      },
+      {
+          "word": "money",
+          "target_lang": "ru"
+      },
+      {
+          "word": "number",
+          "target_lang": "ru"
+      },
+      {
+          "word": "position",
+          "target_lang": "ru"
+      }
+  ]
+}
+```
+
+Payload parameters description:
+
+* `blocks` - (`list`) a list of word block requests.
+  * `word` - (`string`) the word for translation.
+  * `target_lang` - (`string`) a target language code to translate.
+  * `source_lang` - (`string`) a source language code, auto detected, if not defined.
+
+Example output (JSON):
+
+```json
+{
+    "results": [
+      {
+        "status": "success",
+        "result": {
+          "word": "challenge",
+          "target_lang": "ru",
+          "source_lang": "en",
+          "translated_word": "испытание",
+          "pronunciation": "ispytaniye",
+          "extra_data": {
+              "translation": [
+                  [
+                      "испытание",
+                      "challenge",
+                      null,
+                      null,
+                      10
+                  ],
+                  [
+                      null,
+                      null,
+                      "ispytaniye",
+                      "ˈCHalənj"
+                  ]
+              ],
+              "all_translations": [
+                  [
+                      "имя существительное",
+                      [
+                          "вызов",
+                          "проблема",
+                          "сложная задача",
+                          "отвод",
+                          "сомнение",
+                          "оклик",
+                          "вызов на дуэль",
+                          "опознавательные сигналы"
+                      ]
+                  ],
+                  [
+                      "глагол",
+                      [
+                          "оспаривать",
+                          "бросать вызов",
+                          "подвергать сомнению",
+                          "вызывать",
+                          "требовать",
+                          "окликать",
+                          "спрашивать пропуск",
+                          "спрашивать пароль",
+                          "сомневаться",
+                          "отрицать",
+                          "давать отвод присяжным"
+                      ],
+                      ...
+                      "challenge",
+                      2
+                  ]
+              ],
+              "possible_translations": [
+                  [...]
+              ],
+              "possible_mistakes": null,
+              "synonyms": [
+                  [
+                      "имя существительное",
+                      [
+                          [
+                              [
+                                  "dare",
+                                  "provocation",
+                                  "summons"
+                              ],
+                              "m_en_gbus0167500.006"
+                          ],
+                          [
+                              [
+                                  "problem",
+                                  "difficult task",
+                                  "test",
+                                  "trial",
+                                  "trouble",
+                                  "bother",
+                                  "obstacle"
+                              ],
+                              "m_en_gbus0167500.009"
+                          ],
+                          [
+                              [
+                                  "confrontation with",
+                                  "dispute with",
+                                  "stand against",
+                                  "test of",
+                                  "opposition",
+                                  "disagreement with",
+                                  "questioning of",
+                                  "defiance",
+                                  "ultimatum"
+                              ],
+                              "m_en_gbus0167500.012"
+                          ]
+                      ],
+                      "challenge",
+                      1
+                  ]
+              ],
+              "definitions": [
+                  [
+                      "имя существительное",
+                      [
+                          [
+                              "a call to take part in a contest or competition, especially a duel.",
+                              "m_en_gbus0167500.006",
+                              "he accepted the challenge"
+                          ],
+                          [
+                              "an objection or query as to the truth of something, often with an implicit demand for proof.",
+                              "m_en_gbus0167500.012",
+                              "a challenge to the legality of the order"
+                          ],
+                          [
+                              "exposure of the immune system to pathogenic organisms or antigens.",
+                              "m_en_gbus0167500.016",
+                              "recently vaccinated calves should be protected from challenge",
+                              [
+                                  null,
+                                  null,
+                                  [
+                                      "Medicine"
+                                  ]
+                              ]
+                          ]
+                      ],
+                      "challenge",
+                      1
+                  ]
+              ],
+              "examples": [
+              ]
+          },
+          "id": 15
+        }
+      },
+      ...
+    ]
+}
+```
+
+Output values description:
+
+* `word` - Requested word for translation
+* `target_lang` - The target language code.
+* `source_lang` - The source language code of `word`
+* `translated_word` - The translated word to `target_lang`.
+* `pronunciation` - The pronunciation of `word`.
+* `extra_data` - The additional translation information: `synonyms`, `definitions`, etc.

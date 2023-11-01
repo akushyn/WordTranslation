@@ -3,7 +3,7 @@ import logging
 from googletrans import Translator  # type: ignore
 
 from app.exceptions import TranslationException
-from app.models import ExtraData, TranslationResponse
+from app.models import ExtraData, GoogleTranslationResult
 from app.settings import settings
 
 _translator = Translator(
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 def translate(
     text: str, source_lang: str | None, dest_lang: str
-) -> TranslationResponse:
+) -> GoogleTranslationResult:
     logger.info(
         f"Call google translate API to get translation: "
         f"text={text}; source_lang={source_lang}; dest_lang={dest_lang}"
@@ -40,7 +40,7 @@ def translate(
         examples=translation.extra_data["examples"],
     )
 
-    return TranslationResponse(
+    return GoogleTranslationResult(
         translated_word=translation.text,
         pronunciation=translation.pronunciation,
         extra_data=extra_data,

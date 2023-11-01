@@ -1,6 +1,6 @@
 import pytest
 
-from app.models import TranslationResponse
+from app.models import GoogleTranslationResult
 from app.translation import translate
 
 
@@ -14,7 +14,7 @@ def test_translate(client):
 
     result = translate(text=word, source_lang=None, dest_lang="ru")
 
-    assert isinstance(result, TranslationResponse)
+    assert isinstance(result, GoogleTranslationResult)
     assert result.word == word
     assert result.pronunciation == expected_pronunciation
     assert result.translated_word == expected_translated_word

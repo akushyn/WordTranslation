@@ -3,10 +3,10 @@ from pydantic.error_wrappers import ValidationError
 
 from app.models import (
     ExtraData,
+    GoogleTranslationResult,
     IncludeExtra,
     TranslationCreate,
     TranslationRequest,
-    TranslationResponse,
 )
 from tests.conftest import faker
 
@@ -274,7 +274,7 @@ def test_translation_response(translation_request, extra_data):
     translated_word = "испытание"
     extra_data = ExtraData.from_orm(extra_data)
 
-    translation_response = TranslationResponse(
+    translation_response = GoogleTranslationResult(
         translated_word=translated_word,
         extra_data=extra_data,
         **translation_request.dict(),

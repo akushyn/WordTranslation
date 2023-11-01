@@ -10,11 +10,11 @@ from app.db.models import Translation
 from app.exceptions import DuplicateTranslationException, TranslationNotFoundException
 from app.models import (
     ExtraData,
+    GoogleTranslationResult,
     IncludeExtra,
     PaginatedResponse,
     TranslationCreate,
     TranslationRequest,
-    TranslationResponse,
 )
 from app.paginator import Paginator
 from app.translation import translate
@@ -90,7 +90,7 @@ class TranslationService(PaginateMixin):
         return paginate
 
     async def create_translation(
-        self, translation_data: TranslationResponse
+        self, translation_data: GoogleTranslationResult
     ) -> Translation:
         translation = Translation(**translation_data.dict())
         self.session.add(translation)
