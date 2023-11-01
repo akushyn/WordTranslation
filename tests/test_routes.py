@@ -1,10 +1,15 @@
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, call, patch
 
 import pytest
 from fastapi import Response
 
 from app.enums import TranslationStatus
-from app.models import ExtraData, PaginatedResponse, TranslationRequest
+from app.models import (
+    BatchTranslationRequest,
+    ExtraData,
+    PaginatedResponse,
+    TranslationRequest,
+)
 from app.settings import settings
 
 
@@ -233,3 +238,48 @@ def test_get_translations(mock_paginate, client, mock_translation, faker):
     assert response_payload["previous"] == mock_previous
     assert response_payload["pages"] == 1
     assert response_payload["per_page"] == settings.pagination_per_page
+
+
+@patch(
+    "app.api.routes.TranslationService.get_or_create_translation",
+    new_callable=AsyncMock,
+)
+def test_batch_words__translation(mock_get_or_create_translation, mock_request, client):
+    mock_get_or_create_translation.return_value = {
+        "id": 123,
+        "word": "challenge",
+        "translated_word": "испытание",
+        "target_lang": "ru",
+        "source_lang": "en",
+        "extra_data": mock_request.dict(),
+    }
+
+    blocks = [mock_request, mock_request, mock_request]
+    batch_request = BatchTranslationRequest(blocks=blocks)
+
+    response = client.post("/api/translations/words/", json=batch_request.dict())
+    results = response.json()["results"]
+
+    assert response.status_code == 200
+    assert len(results) == len(blocks)
+    assert results[0]["status"] == TranslationStatus.success.value
+    assert results[0]["result"] == {
+        "word": "challenge",
+        "target_lang": "ru",
+        "source_lang": "en",
+        "translated_word": "испытание",
+        "pronunciation": None,
+        "extra_data": {
+            "translation": None,
+            "all_translations": None,
+            "possible_translations": None,
+            "possible_mistakes": None,
+            "synonyms": None,
+            "definitions": None,
+            "examples": None,
+        },
+        "id": 123,
+    }
+    mock_get_or_create_translation.assert_has_calls(
+        [call(mock_request)] * 3, any_order=False
+    )
