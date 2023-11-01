@@ -3,6 +3,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from fastapi import Response
 
+from app.enums import TranslationStatus
 from app.models import ExtraData, PaginatedResponse, TranslationRequest
 from app.settings import settings
 
@@ -168,9 +169,10 @@ def test_get_translation(mock_get_or_create_translation, mock_request, client):
     }
 
     response = client.get("/api/translations/word/", params=mock_request.dict())
-
+    result = response.json()
     assert response.status_code == 200
-    assert response.json() == {
+    assert result["status"] == TranslationStatus.success.value
+    assert result["result"] == {
         "word": "challenge",
         "target_lang": "ru",
         "source_lang": "en",

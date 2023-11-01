@@ -3,6 +3,8 @@ from typing import Generic, TypeVar
 from googletrans import LANGUAGES  # type: ignore
 from pydantic import BaseModel, validator
 
+from app.enums import TranslationStatus
+
 
 class TranslationRequest(BaseModel):
     word: str
@@ -23,6 +25,10 @@ class TranslationRequest(BaseModel):
         if len(value.split()) > 1:
             raise ValueError("Multiple words translation is not supported")
         return value
+
+
+class BatchTranslationRequest(BaseModel):
+    blocks: list[TranslationRequest]
 
 
 class ExtraData(BaseModel):
@@ -54,14 +60,28 @@ class IncludeExtra(BaseModel):
         return true_attributes
 
 
-class TranslationResponse(TranslationRequest):
+class GoogleTranslationResult(TranslationRequest):
     translated_word: str
     pronunciation: str | None = None
     extra_data: ExtraData
 
 
-class TranslationCreate(TranslationResponse):
+class TranslationCreate(GoogleTranslationResult):
     id: int
+
+
+class TranslationSuccessResponse(BaseModel):
+    status: str = TranslationStatus.success.value
+    result: TranslationCreate
+
+
+class TranslationFailResponse(BaseModel):
+    status: str = TranslationStatus.fail.value
+    message: str
+
+
+class BatchTranslationResponse(BaseModel):
+    results: list[TranslationSuccessResponse]
 
 
 T = TypeVar("T")
